@@ -51,7 +51,11 @@ RUN mkdir -p "${HADOOP_HOME}" \
   && export DOWNLOAD_PATH=apache/hadoop/common/hadoop-$HADOOP_VERSION/$ARCHIVE \
   && curl -sSL https://mirrors.ocf.berkeley.edu/$DOWNLOAD_PATH | \
     tar -xz -C $HADOOP_HOME --strip-components 1 \
-  && rm -rf $ARCHIVE && sync
+  && rm -rf $ARCHIVE \
+  && curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64" \
+  && chmod +x /usr/local/bin/gosu \
+  && sync
+
 
 RUN sed -i.bak "s/hadoop-daemons.sh/hadoop-daemon.sh/g" \
     $HADOOP_HOME/sbin/start-dfs.sh \
