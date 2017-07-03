@@ -1,5 +1,6 @@
-FROM openjdk:8-jre
-MAINTAINER Singularities
+FROM bluepine/bigdata-alpine-base
+
+MAINTAINER "Song Wei"
 
 # Version
 ENV HADOOP_VERSION=2.8.0
@@ -7,12 +8,12 @@ ENV HADOOP_VERSION=2.8.0
 # Set home
 ENV HADOOP_HOME=/usr/local/hadoop-$HADOOP_VERSION
 
-# Install dependencies
-RUN apt-get update \
-  && DEBIAN_FRONTEND=noninteractive apt-get install \
-    -yq --no-install-recommends netcat \
-  && apt-get clean \
-	&& rm -rf /var/lib/apt/lists/*
+# # Install dependencies
+# RUN apt-get update \
+#   && DEBIAN_FRONTEND=noninteractive apt-get install \
+#     -yq --no-install-recommends netcat \
+#   && apt-get clean \
+# 	&& rm -rf /var/lib/apt/lists/*
 
 # Install Hadoop
 RUN mkdir -p "${HADOOP_HOME}" \
@@ -39,11 +40,11 @@ RUN sed -i.bak "s/hadoop-daemons.sh/hadoop-daemon.sh/g" \
     $HADOOP_HOME/sbin/stop-dfs.sh \
   && rm -f $HADOOP_HOME/sbin/stop-dfs.sh.bak
 
-# HDFS
-EXPOSE 8020 14000 50070 50470
+# # HDFS
+# EXPOSE 8020 14000 50070 50470
 
-# MapReduce
-EXPOSE 10020 13562	19888
+# # MapReduce
+# EXPOSE 10020 13562	19888
 
 # Copy start scripts
 COPY start-hadoop /opt/util/bin/start-hadoop
@@ -51,8 +52,8 @@ COPY start-hadoop-namenode /opt/util/bin/start-hadoop-namenode
 COPY start-hadoop-datanode /opt/util/bin/start-hadoop-datanode
 ENV PATH=$PATH:/opt/util/bin
 
-# Fix environment for other users
-RUN echo "export HADOOP_HOME=$HADOOP_HOME" > /etc/bash.bashrc.tmp \
-  && echo 'export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:/opt/util/bin'>> /etc/bash.bashrc.tmp \
-  && cat /etc/bash.bashrc >> /etc/bash.bashrc.tmp \
-  && mv -f /etc/bash.bashrc.tmp /etc/bash.bashrc
+# # Fix environment for other users
+# RUN echo "export HADOOP_HOME=$HADOOP_HOME" > /etc/bash.bashrc.tmp \
+#   && echo 'export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:/opt/util/bin'>> /etc/bash.bashrc.tmp \
+#   && cat /etc/bash.bashrc >> /etc/bash.bashrc.tmp \
+#   && mv -f /etc/bash.bashrc.tmp /etc/bash.bashrc
