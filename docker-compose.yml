@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  namenode:
+    image: local/hadoop-2
+    build: .
+    command: start-hadoop namenode
+    environment:
+      HDFS_USER: hdfsuser
+    # ports:
+    #   - "8020:8020"
+    #   - "14000:14000"
+    #   - "50070:50070"
+    #   - "50075:50075"
+    #   - "10020:10020"
+    #   - "13562:13562"
+    #   - "19888:19888"
+  datanode:
+    deploy:
+      replicas: 1
+    build: .
+    image: local/hadoop-2
+    depends_on:
+      - namenode
+    command: start-hadoop datanode namenode
+    environment:
+      HDFS_USER: hdfsuser
+    # links:
+    #   - namenode
