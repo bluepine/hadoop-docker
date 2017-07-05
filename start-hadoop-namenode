@@ -11,11 +11,14 @@ rm -f $HADOOP_CONF_DIR/core-site.xml.bak
 if [ ! -f /opt/hdfs/name/current/VERSION ]; then
   hdfs namenode -format -force
 fi
+# start namenode process
+hdfs namenode
+
 # Start HDFS service
-start-dfs.sh
+# start-dfs.sh
 # Fix permissions for root directory
-hdfs dfs -chown $HDFS_USER:$HDFS_USER /
-# Start daemon if specified
-if [[ "${1}" != 'daemon' ]]; then
-   tail -f /dev/null
-fi
+# hdfs dfs -chown $HDFS_USER:$HDFS_USER /
+# # Start daemon if specified
+# if [[ "${1}" != 'daemon' ]]; then
+#    tail -f /dev/null
+# fi
