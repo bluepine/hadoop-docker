@@ -9,7 +9,7 @@ services:
   secondarynamenode:
     image: local/hadoop-2
     build: .
-    depends_on:
+    links:
       - namenode
     command: start-hadoop-secondarynamenode
 
@@ -18,7 +18,7 @@ services:
       replicas: 2
     build: .
     image: local/hadoop-2
-    depends_on:
+    links:
       - namenode
       - secondarynamenode
     command: start-hadoop-datanode
