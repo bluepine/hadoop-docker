@@ -25,9 +25,10 @@ RUN adduser -S -D -H -g "" $HDFS_USER \
     && curl -sSL https://mirrors.ocf.berkeley.edu/$DOWNLOAD_PATH | \
        tar -xz -C $HADOOP_HOME --strip-components 1 \
     && rm -rf $ARCHIVE \
-    && apk update && apk add su-exec procps && rm -rf /var/cache/apk/* \
+    && apk update && apk add procps && rm -rf /var/cache/apk/* \
     && mkdir /opt/hdfs \
-    && chown -R $HDFS_USER:$HDFS_USER /opt/hdfs \
+    && mkdir /opt/hdfs2 \
+    && chown -R $HDFS_USER:$HDFS_USER /opt/hdfs /opt/hdfs2 \
     && chown -R $HDFS_USER:$HDFS_USER $HADOOP_HOME \
     && sync
 
@@ -36,6 +37,7 @@ USER $HDFS_USER
 
 # HDFS volume
 VOLUME /opt/hdfs
+VOLUME /opt/hdfs2
 
 # Copy and fix configuration files
 COPY ./conf/*.xml $HADOOP_CONF_DIR/

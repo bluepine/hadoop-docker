@@ -25,7 +25,7 @@
   </property>
   <property>
     <name>dfs.namenode.name.dir</name>
-    <value>file:/opt/hdfs/name</value>
+    <value>file:/opt/hdfs/name,file:/opt/hdfs2/name</value>
   </property>
   <property>
     <name>dfs.namenode.checkpoint.dir</name>

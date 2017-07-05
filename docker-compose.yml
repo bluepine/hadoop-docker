@@ -15,7 +15,7 @@ services:
 
   datanode:
     deploy:
-      replicas: 1
+      replicas: 2
     build: .
     image: local/hadoop-2
     depends_on:
