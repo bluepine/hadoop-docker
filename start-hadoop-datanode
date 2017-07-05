@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -x
 # Starts the Hadoop data node. Expects the name node host and the daemon flag
 # as parameters
 
@@ -19,5 +19,5 @@ rm -f $HADOOP_CONF_DIR/core-site.xml.bak
 hadoop-daemon.sh start datanode
 # Start daemon if specified
 if [[ "${2}" != 'daemon' ]]; then
-  sleep infinity
+  sleep 24h
 fi

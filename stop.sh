@@ -1,3 +1,3 @@
 #!/bin/bash
-#docker-compose stop
-docker stack rm hadoop
+docker-compose stop
+#docker stack rm hadoop

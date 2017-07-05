@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -x
 # Check user environment variable
 if [[ -z "${HDFS_USER}" ]]; then
   echo "Missing HDFS_USER environment variable" >&2
@@ -9,15 +9,16 @@ fi
 HADOOP_USER_NAME="${HDFS_USER}"
 echo "export  HADOOP_USER_NAME=\"${HDFS_USER}\"" >> /etc/bash.bashrc
 # Create user for HDFS
-adduser --no-create-home --disabled-password --gecos "" $HDFS_USER
+adduser -S -D -H -g "" $HDFS_USER
+addgroup $HDFS_USER
 # Fix directory permissions
 chown -R $HDFS_USER:$HDFS_USER /opt/hdfs
 chown -R $HDFS_USER:$HDFS_USER $HADOOP_HOME
 # Select node type
 if [[ "${1}" = 'namenode' ]]; then
-  su $HDFS_USER -c "/opt/util/bin/start-hadoop-namenode $2"
+  su-exec $HDFS_USER sh -c "/opt/util/bin/start-hadoop-namenode $2"
 elif [[ "${1}" =  'datanode' ]]; then
-  su $HDFS_USER -c "/opt/util/bin/start-hadoop-datanode $2 $3"
+  su-exec $HDFS_USER sh -c "/opt/util/bin/start-hadoop-datanode $2 $3"
 else
   echo "Invalid command '${1}'" >&2
   exit 1
