@@ -5,8 +5,8 @@ set -x
 # source /etc/bash.bashrc
 
 # Repalce namenode host in core-site.xml
-# sed -i.bak "s|\[NAMENODE_HOST\]|$(hostname)|g" $HADOOP_CONF_DIR/core-site.xml
-# rm -f $HADOOP_CONF_DIR/core-site.xml.bak
+sed -i.bak "s|namenode|$(hostname)|g" $HADOOP_CONF_DIR/core-site.xml
+rm -f $HADOOP_CONF_DIR/core-site.xml.bak
 
 # Format namenode
 if [ ! -f /opt/hdfs/name/current/VERSION ]; then
