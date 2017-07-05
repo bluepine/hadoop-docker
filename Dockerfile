@@ -11,36 +11,46 @@ ENV HADOOP_HOME=/usr/local/hadoop-$HADOOP_VERSION
 
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop \
   HADOOP_LIBEXEC_DIR=$HADOOP_HOME/libexec \
-  PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:/opt/util/bin
+  PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:/opt/util/bin \
+  HDFS_USER=hdfsuser
+
+
+# Install Hadoop
+RUN adduser -S -D -H -g "" $HDFS_USER \
+    && addgroup $HDFS_USER \
+    && sync \
+    && mkdir -p "${HADOOP_HOME}" \
+    && export ARCHIVE=hadoop-$HADOOP_VERSION.tar.gz \
+    && export DOWNLOAD_PATH=apache/hadoop/common/hadoop-$HADOOP_VERSION/$ARCHIVE \
+    && curl -sSL https://mirrors.ocf.berkeley.edu/$DOWNLOAD_PATH | \
+       tar -xz -C $HADOOP_HOME --strip-components 1 \
+    && rm -rf $ARCHIVE \
+    && apk update && apk add su-exec procps && rm -rf /var/cache/apk/* \
+    && mkdir /opt/hdfs \
+    && chown -R $HDFS_USER:$HDFS_USER /opt/hdfs \
+    && chown -R $HDFS_USER:$HDFS_USER $HADOOP_HOME \
+    && sync
+
+
+USER $HDFS_USER
 
 # HDFS volume
 VOLUME /opt/hdfs
 
-
-
-# Install Hadoop
-RUN mkdir -p "${HADOOP_HOME}" \
-  && export ARCHIVE=hadoop-$HADOOP_VERSION.tar.gz \
-  && export DOWNLOAD_PATH=apache/hadoop/common/hadoop-$HADOOP_VERSION/$ARCHIVE \
-  && curl -sSL https://mirrors.ocf.berkeley.edu/$DOWNLOAD_PATH | \
-    tar -xz -C $HADOOP_HOME --strip-components 1 \
-  && rm -rf $ARCHIVE \
-  && apk update && apk add su-exec procps && rm -rf /var/cache/apk/* \
-  && sync
-
 # Copy and fix configuration files
 COPY ./conf/*.xml $HADOOP_CONF_DIR/
 # Copy start scripts
-COPY start-hadoop /opt/util/bin/start-hadoop
 COPY start-hadoop-namenode /opt/util/bin/start-hadoop-namenode
 COPY start-hadoop-datanode /opt/util/bin/start-hadoop-datanode
+COPY start-hadoop-secondarynamenode /opt/util/bin/start-hadoop-secondarynamenode
 
-RUN sed -i.bak "s/hadoop-daemons.sh/hadoop-daemon.sh/g" \
-    $HADOOP_HOME/sbin/start-dfs.sh \
-  && rm -f $HADOOP_HOME/sbin/start-dfs.sh.bak \
-  && sed -i.bak "s/hadoop-daemons.sh/hadoop-daemon.sh/g" \
-    $HADOOP_HOME/sbin/stop-dfs.sh \
-  && rm -f $HADOOP_HOME/sbin/stop-dfs.sh.bak && sync
+
+# RUN sed -i.bak "s/hadoop-daemons.sh/hadoop-daemon.sh/g" \
+#     $HADOOP_HOME/sbin/start-dfs.sh \
+#   && rm -f $HADOOP_HOME/sbin/start-dfs.sh.bak \
+#   && sed -i.bak "s/hadoop-daemons.sh/hadoop-daemon.sh/g" \
+#     $HADOOP_HOME/sbin/stop-dfs.sh \
+#   && rm -f $HADOOP_HOME/sbin/stop-dfs.sh.bak && sync
 
 # # Install dependencies
 # RUN apt-get update \
@@ -56,7 +66,6 @@ RUN sed -i.bak "s/hadoop-daemons.sh/hadoop-daemon.sh/g" \
 
 # # MapReduce
 # EXPOSE 10020 13562	19888
-
 
 
 # # Fix environment for other users

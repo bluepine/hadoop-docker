@@ -4,20 +4,14 @@ services:
   namenode:
     image: local/hadoop-2
     build: .
-    command: start-hadoop namenode
-    #command: sleep 24h
-    environment:
-      HDFS_USER: hdfsuser
-    # ports:
-    #   - "8020:8020"
-    #   - "14000:14000"
-    #   - "50070:50070"
-    #   - "50075:50075"
-    #   - "10020:10020"
-    #   - "13562:13562"
-    #   - "19888:19888"
-    volumes:
-      - .:/code #debugging
+    command: start-hadoop-namenode
+
+  secondarynamenode:
+    image: local/hadoop-2
+    build: .
+    depends_on:
+      - namenode
+    command: start-hadoop-secondarynamenode
 
   datanode:
     deploy:
@@ -26,12 +20,5 @@ services:
     image: local/hadoop-2
     depends_on:
       - namenode
-    #command: sleep 24h
-    command: start-hadoop datanode namenode
-    environment:
-      HDFS_USER: hdfsuser
-    volumes:
-      - .:/code #debugging
-
-    # links:
-    #   - namenode
+      - secondarynamenode
+    command: start-hadoop-datanode

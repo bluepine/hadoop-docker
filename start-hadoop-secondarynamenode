@@ -9,12 +9,12 @@ set -x
 # rm -f $HADOOP_CONF_DIR/core-site.xml.bak
 
 # Format namenode
-if [ ! -f /opt/hdfs/name/current/VERSION ]; then
-    hdfs namenode -format -force
-fi
+# if [ ! -f /opt/hdfs/name/current/VERSION ]; then
+#   hdfs namenode -format -force
+# fi
 
 # start namenode process
-hdfs namenode
+hdfs secondarynamenode
 
 # Start HDFS service
 # start-dfs.sh
