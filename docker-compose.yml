@@ -4,8 +4,8 @@ services:
   namenode:
     image: local/hadoop-2
     build: .
-    #command: start-hadoop namenode
-    command: sleep 24h
+    command: start-hadoop namenode
+    #command: sleep 24h
     environment:
       HDFS_USER: hdfsuser
     # ports:
@@ -26,8 +26,8 @@ services:
     image: local/hadoop-2
     depends_on:
       - namenode
-    command: sleep 24h
-    #command: start-hadoop datanode namenode
+    #command: sleep 24h
+    command: start-hadoop datanode namenode
     environment:
       HDFS_USER: hdfsuser
     volumes:

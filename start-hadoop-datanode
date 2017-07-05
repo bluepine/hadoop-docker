@@ -19,5 +19,5 @@ rm -f $HADOOP_CONF_DIR/core-site.xml.bak
 hadoop-daemon.sh start datanode
 # Start daemon if specified
 if [[ "${2}" != 'daemon' ]]; then
-  sleep 24h
+   tail -f /dev/null
 fi
