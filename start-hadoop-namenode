@@ -7,6 +7,8 @@ rm -f $HADOOP_CONF_DIR/core-site.xml.bak
 
 # Format namenode
 if [ ! -f /opt/hdfs/name/current/VERSION ]; then
+    ls /opt/hdfs/
+    ls /opt/hdfs/name
     hdfs namenode -format -force
 fi
 

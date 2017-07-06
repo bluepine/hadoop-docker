@@ -11,7 +11,7 @@ ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop \
   HDFS_USER=hdfsuser
 
 ### Run
-RUN adduser -S -D -H -g "" $HDFS_USER \
+RUN adduser -S -D -g "" $HDFS_USER \
     && addgroup $HDFS_USER \
     && sync \
     && mkdir -p "${HADOOP_HOME}" \
