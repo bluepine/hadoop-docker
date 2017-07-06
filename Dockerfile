@@ -30,7 +30,7 @@ RUN adduser -S -D -g "" $HDFS_USER \
 ### User
 USER $HDFS_USER
 
-### Volume
+### Volume: using unamed volumes since replica services do not work with named volumes without plugins.
 VOLUME /opt/hdfs
 VOLUME /opt/hdfs2
 
