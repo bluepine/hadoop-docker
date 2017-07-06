@@ -20,6 +20,7 @@ RUN adduser -S -D -g "" $HDFS_USER \
     && curl -sSL https://mirrors.ocf.berkeley.edu/$DOWNLOAD_PATH | \
        tar -xz -C $HADOOP_HOME --strip-components 1 \
     && rm -rf $ARCHIVE \
+    && rm -rf $HADOOP_HOME/share/doc \
     && apk update && apk add procps && rm -rf /var/cache/apk/* \
     && mkdir /opt/hdfs \
     && mkdir /opt/hdfs2 \
