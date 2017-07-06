@@ -4,11 +4,14 @@ MAINTAINER "Song Wei"
 
 ### Env
 ENV HADOOP_VERSION=2.8.0
-ENV HADOOP_HOME=/usr/local/hadoop-$HADOOP_VERSION
+ENV HDFS_USER=hdfsuser
+ENV HDFS_USER_CODE_DIR=/home/$HDFS_USER/.usr
+ENV HDFS_USER_DATA_DIR=/home/$HDFS_USER/.data
+ENV HDFS_VOL1=$HDFS_USER_DATA_DIR/hdfs1 HDFS_VOL2=$HDFS_USER_DATA_DIR/hdfs2
+ENV HADOOP_HOME=$HDFS_USER_CODE_DIR/hadoop-$HADOOP_VERSION
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop \
   HADOOP_LIBEXEC_DIR=$HADOOP_HOME/libexec \
-  PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:/opt/util/bin \
-  HDFS_USER=hdfsuser
+  PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:/opt/util/bin
 
 ### Run
 RUN adduser -S -D -g "" $HDFS_USER \
@@ -22,9 +25,9 @@ RUN adduser -S -D -g "" $HDFS_USER \
     && rm -rf $ARCHIVE \
     && rm -rf $HADOOP_HOME/share/doc \
     && apk update && apk add procps && rm -rf /var/cache/apk/* \
-    && mkdir /opt/hdfs \
-    && mkdir /opt/hdfs2 \
-    && chown -R $HDFS_USER:$HDFS_USER /opt/hdfs /opt/hdfs2 \
+    && mkdir -p $HDFS_VOL1 \
+    && mkdir -p $HDFS_VOL2 \
+    && chown -R $HDFS_USER:$HDFS_USER $HDFS_VOL1 $HDFS_VOL2 \
     && chown -R $HDFS_USER:$HDFS_USER $HADOOP_HOME \
     && sync
 
@@ -32,8 +35,8 @@ RUN adduser -S -D -g "" $HDFS_USER \
 USER $HDFS_USER
 
 ### Volume: using unamed volumes since replica services do not work with named volumes without plugins.
-VOLUME /opt/hdfs
-VOLUME /opt/hdfs2
+VOLUME $HDFS_VOL1
+VOLUME $HDFS_VOL2
 
 ### Copy
 COPY ./conf/*.xml $HADOOP_CONF_DIR/
