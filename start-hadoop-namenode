@@ -6,9 +6,7 @@ sed -i.bak "s|namenode|$(hostname)|g" $HADOOP_CONF_DIR/core-site.xml
 rm -f $HADOOP_CONF_DIR/core-site.xml.bak
 
 # Format namenode
-if [ ! -f /opt/hdfs/name/current/VERSION ]; then
-    ls /opt/hdfs/
-    ls /opt/hdfs/name
+if [ ! -f $HDFS_VOL1/name/current/VERSION ]; then
     hdfs namenode -format -force
 fi
 

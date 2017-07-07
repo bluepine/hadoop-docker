@@ -15,7 +15,7 @@ ENV HDFS_VOL1=$USER_DATA/hdfs1 HDFS_VOL2=$USER_DATA/hdfs2
 ENV HADOOP_HOME=$USER_CODE/hadoop-$HADOOP_VERSION
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop \
   HADOOP_LIBEXEC_DIR=$HADOOP_HOME/libexec \
-  PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:/opt/util/bin
+  PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$USER_CODE/util/bin
 
 ### Run
 RUN adduser -S -D -g "" $USER \
@@ -28,7 +28,7 @@ RUN adduser -S -D -g "" $USER \
        tar -xz -C $HADOOP_HOME --strip-components 1 \
     && rm -rf $ARCHIVE \
     && rm -rf $HADOOP_HOME/share/doc \
-    && apk update && apk add procps && rm -rf /var/cache/apk/* \
+    && apk update && apk add procps supervisor && rm -rf /var/cache/apk/* \
     && mkdir -p $HDFS_VOL1 \
     && mkdir -p $HDFS_VOL2 \
     && chown -R $USER:$USER $USER_HOME \
@@ -43,7 +43,7 @@ VOLUME $HDFS_VOL2
 
 ### Copy
 COPY ./conf/*.xml $HADOOP_CONF_DIR/
-COPY start-hadoop-namenode /opt/util/bin/start-hadoop-namenode
-COPY start-hadoop-datanode /opt/util/bin/start-hadoop-datanode
-COPY start-hadoop-secondarynamenode /opt/util/bin/start-hadoop-secondarynamenode
+COPY start-hadoop-namenode $USER_CODE/util/bin/start-hadoop-namenode
+COPY start-hadoop-datanode $USER_CODE/util/bin/start-hadoop-datanode
+COPY start-hadoop-secondarynamenode $USER_CODE/util/bin/start-hadoop-secondarynamenode
 

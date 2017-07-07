@@ -21,15 +21,15 @@
   </property>
   <property>
     <name>dfs.datanode.data.dir</name>
-    <value>file:/opt/hdfs/data</value>
+    <value>file:/home/hdfsuser/.data/hdfs1/data</value>
   </property>
   <property>
     <name>dfs.namenode.name.dir</name>
-    <value>file:/opt/hdfs/name,file:/opt/hdfs2/name</value>
+    <value>file:/home/hdfsuser/.data/hdfs1/name,file:/home/hdfsuser/.data/hdfs2/name</value>
   </property>
   <property>
     <name>dfs.namenode.checkpoint.dir</name>
-    <value>file:/opt/hdfs/checkpoint</value>
+    <value>file:/home/hdfsuser/.data/hdfs1/checkpoint</value>
   </property>
   <property>
     <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
