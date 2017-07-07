@@ -31,8 +31,7 @@ RUN adduser -S -D -g "" $USER \
     && apk update && apk add procps && rm -rf /var/cache/apk/* \
     && mkdir -p $HDFS_VOL1 \
     && mkdir -p $HDFS_VOL2 \
-    && chown -R $USER:$USER $HDFS_VOL1 $HDFS_VOL2 \
-    && chown -R $USER:$USER $HADOOP_HOME \
+    && chown -R $USER:$USER $USER_HOME \
     && sync
 
 ### User
