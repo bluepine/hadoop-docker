@@ -1,3 +1,4 @@
 #!/bin/bash
-#docker-compose down
-docker stack rm hadoop
+. setup.sh
+docker-compose down
+#docker stack rm hadoop

@@ -1,8 +1,8 @@
 #!/bin/sh
 #installation script used when building docker image. use at most one.
 set -x
+apk add --no-cache curl netcat-openbsd bash
 mkdir -p /opt
-apk add --no-cache curl netcat-openbsd
 adduser -S -D -g "" $USER;
 addgroup $USER;
 mkdir -p "${HADOOP_HOME}";
