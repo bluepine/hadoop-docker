@@ -2,8 +2,8 @@
 set -x
 
 # Repalce namenode host in core-site.xml, since docker service name cannot be used as hostname when listening in docker stack setup
-sed -i.bak "s|namenode|$(hostname)|g" $HADOOP_CONF_DIR/core-site.xml
-rm -f $HADOOP_CONF_DIR/core-site.xml.bak
+# sed -i.bak "s|namenode|$(hostname)|g" $HADOOP_CONF_DIR/core-site.xml
+# rm -f $HADOOP_CONF_DIR/core-site.xml.bak
 
 # Format namenode
 if [ ! -f $HDFS_VOL1/name/current/VERSION ]; then

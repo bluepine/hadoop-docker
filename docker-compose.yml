@@ -8,8 +8,8 @@ services:
     hostname: namenode
     command: start-hadoop-namenode
     volumes:
-      -"${HDFS_VOL1}"
-      -"${HDFS_VOL2}"
+      - "$HDFS_VOL1"
+      - "$HDFS_VOL2"
 
   secondarynamenode:
     read_only: true
@@ -19,7 +19,7 @@ services:
       - namenode
     command: start-hadoop-secondarynamenode
     volumes:
-      -"${HDFS_VOL1}"
+      - "$HDFS_VOL1"
 
   datanode:
     read_only: true
@@ -32,4 +32,4 @@ services:
       - secondarynamenode
     command: start-hadoop-datanode
     volumes:
-      -"${HDFS_VOL1}"
+      - "$HDFS_VOL1"
