@@ -2,18 +2,27 @@ version: "3"
 
 services:
   namenode:
+    read_only: true
     image: local/hadoop-2
     build: .
+    hostname: namenode
     command: start-hadoop-namenode
+    volumes:
+      -"${HDFS_VOL1}"
+      -"${HDFS_VOL2}"
 
   secondarynamenode:
+    read_only: true
     image: local/hadoop-2
     build: .
     links:
       - namenode
     command: start-hadoop-secondarynamenode
+    volumes:
+      -"${HDFS_VOL1}"
 
   datanode:
+    read_only: true
     deploy:
       replicas: 2
     build: .
@@ -22,3 +31,5 @@ services:
       - namenode
       - secondarynamenode
     command: start-hadoop-datanode
+    volumes:
+      -"${HDFS_VOL1}"
